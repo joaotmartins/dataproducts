@@ -28,7 +28,10 @@ shinyUI(fluidPage(
                                      selected = "def"),
                         conditionalPanel(condition = "input.trainPars == 'cus'",
                                          sliderInput("boot.number", "Nr. Resampling Iterations",
-                                                        5,35,25)),
+                                                        5,35,25),
+                                         sliderInput("pct.training", "% Of data used for training",
+                                                     1,100,70, step = 1, post="%")
+                                         ),
                         # Go button to kick of calculations
                         actionButton("goButton", "Go")
                 ),
@@ -40,7 +43,8 @@ shinyUI(fluidPage(
                         tableOutput("predTable"),
                         c("Prediction accuracy: "),
                         textOutput("accuracy"),
-                        h5("Prediction Render over the two most important variables:")
+                        h5("Prediction Render over the two most important variables:"),
+                        plotOutput("plot")
                 )
         )
 ))
