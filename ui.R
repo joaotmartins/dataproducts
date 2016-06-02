@@ -30,7 +30,7 @@ shinyUI(fluidPage(
                                          sliderInput("boot.number", "Nr. Resampling Iterations",
                                                         5,35,25),
                                          sliderInput("pct.training", "% Of data used for training",
-                                                     1,100,70, step = 1, post="%")
+                                                     1,90,70, step = 1, post="%")
                                          ),
                         # Go button to kick of calculations
                         actionButton("goButton", "Go")
