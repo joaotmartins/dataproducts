@@ -11,11 +11,17 @@ shinyUI(fluidPage(
         
         # Application title
         titlePanel("Classification using Iris data set"),
-        
+        p("This application allows studying the performance of three different\
+          classification algorithms, and vary the number of resampling iterations\
+                and the split between training and testing sets."),
+        p("The outputs consist on the confusion matrix, prediction accuracy, and \
+          a plot of the predicted values by the two most important variables \
+          considered by the algorithm."),
+        p(" "),
         # Sidebar with control inputs
         sidebarLayout(
                 sidebarPanel(
-                        h4("Prediction controls:"),
+                        h4("Classification controls"),
                         # Choice of prediction algorithm
                         selectizeInput("predAlg", "Prediction Algorithm:",
                                        c("Logistic Regression" = "multinom",
@@ -33,17 +39,16 @@ shinyUI(fluidPage(
                                                      1,90,70, step = 1, post="%")
                                          ),
                         # Go button to kick of calculations
-                        actionButton("goButton", "Go")
+                        actionButton("goButton", "Calculate")
                 ),
                 
                 # Show a plot of the generated distribution
                 mainPanel(
                         h4("Results"),
-                        c("Prediction table: "),
+                        c("Confusion matrix (predicted(row) vs. actual(column)): "),
                         tableOutput("predTable"),
                         c("Prediction accuracy: "),
                         textOutput("accuracy"),
-                        h5("Prediction Render over the two most important variables:"),
                         plotOutput("plot")
                 )
         )

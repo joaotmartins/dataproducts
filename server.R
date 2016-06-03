@@ -57,7 +57,8 @@ accuracyPlot <- function(impVars, predictions, actual) {
         
         ggplot(d, aes_string(x = impVars$varname[1], y = impVars$varname[2])) + 
                 geom_point(aes(shape = Correct, color = Species, size = 50)) +
-                guides(shape = "legend", color = "legend", size = "none")
+                guides(shape = "legend", color = "legend", size = "none") +
+                ggtitle("Test values, plotted over the two most significant classification variables")
 }
 
 # render plot predictions based on currently calculated model
