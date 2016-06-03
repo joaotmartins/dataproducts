@@ -1,11 +1,44 @@
+Comparing prediction algorithms over the 'iris' dataset
+========================================================
+author: João Martins
+date: 2016-06-03
 
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
+Overview
+========================================================
 
-library(shiny)
+* A small application that compares how three different algorithms perform on a 
+classification task.
+
+* Classification is done over the `iris` dataset.
+
+
+Algorithms and Parameters
+========================================================
+
+Users can choose between three different algorithms supported by 
+the `caret` package:
+
+* Logistic regression - using the `multinom` algorithm
+* Random forests - `rf`
+* K-Nearest-Neighbors - `knn`
+
+Besides the algorithms, users can change:
+
+* The number of resampling iterations
+* The split between training and testing on the `iris`dataset
+
+
+Output (1/2)
+========================================================
+
+The output is a confusion matrix, prediction accuracy, and a plot over the two
+most important prediction variables.
+
+An example using random forests, with 5 resampling iterations and a 60/40 
+training/testing will yield the following:
+
+```{r, echo=FALSE}
+
 library(caret)
 library(e1071)
 library(pROC)
@@ -21,7 +54,7 @@ modelFit <- function(classif.method, boost.number = 25, pct.train = 70) {
         training <- iris[inTrain, ]
         testing <- iris[-inTrain, ]
         
-        m <- isolate(classif.method)
+        m <- classif.method
         
         tc <- trainControl(savePredictions = "final", number = boost.number)
         
@@ -72,20 +105,15 @@ makePlot <- function(currModel) {
         }
 }
 
+currentModel <- modelFit("rf", 5, 60)
+currentModel$resTable
+currentModel$confMatrix$overall[1]
+```
 
-shinyServer(function(input, output) {
-        
-        currentModel <- reactive({ 
-                if (input$goButton >= 1) {
-                        isolate({modelFit(input$predAlg, 
-                                          input$boot.number,
-                                          input$pct.training)})
-                }
-        })
-                
-        output$predTable <- renderTable({ currentModel()$resTable })
-        
-        output$accuracy <- renderText({ currentModel()$confMatrix$overall[1] })
-        
-        output$plot <- renderPlot({ makePlot(currentModel()) })
-})
+Output (2/2)
+==============================================
+
+```{r, echo=FALSE}
+makePlot(currentModel)
+
+```
